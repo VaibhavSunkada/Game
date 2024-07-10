@@ -1,0 +1,57 @@
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const pacMan = {
+    x: 50,
+    y: 50,
+    radius: 20,
+    angle: 0.25,
+    direction: 0,
+    speed: 2
+};
+
+const keyMap = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
+};
+
+document.addEventListener('keydown', (event) => {
+    pacMan.direction = keyMap[event.keyCode];
+});
+
+function drawPacMan() {
+    ctx.beginPath();
+    ctx.arc(pacMan.x, pacMan.y, pacMan.radius, pacMan.angle * Math.PI, (2 - pacMan.angle) * Math.PI);
+    ctx.lineTo(pacMan.x, pacMan.y);
+    ctx.fillStyle = 'yellow';
+    ctx.fill();
+    ctx.closePath();
+}
+
+function movePacMan() {
+    switch (pacMan.direction) {
+        case 'left':
+            pacMan.x -= pacMan.speed;
+            break;
+        case 'up':
+            pacMan.y -= pacMan.speed;
+            break;
+        case 'right':
+            pacMan.x += pacMan.speed;
+            break;
+        case 'down':
+            pacMan.y += pacMan.speed;
+            break;
+    }
+}
+
+function updateGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    movePacMan();
+    drawPacMan();
+    requestAnimationFrame(updateGame);
+}
+
+updateGame();
